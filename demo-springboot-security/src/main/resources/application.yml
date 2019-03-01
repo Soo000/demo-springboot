@@ -1,0 +1,33 @@
+spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://111.231.220.72:3306/gallery?characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull
+    username: root
+    password: 7890uiop
+    max-active: 20
+    max-idle: 8
+    min-idle: 8
+    initial-size: 10
+  jpa:
+    database: MYSQL
+    show-sql: true
+    #hibernate.ddl-auto: update
+    hibernate.naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+    properties.hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
+    
+## security
+security:
+#  user:
+#    name: root
+#    password: root
+#    role: GUEST,USER
+  ignored: /**/*.css,/**/*.js,/**/*.jpg
+  
+## 设置日志级别，打印mybatis的日志  
+logging:
+  level:  
+    root: info    

@@ -1,0 +1,16 @@
+##############################
+# server configuration
+##############################
+server:
+  port: 8080
+  
+spring:
+  application:
+    name: demo-springboot-rabbitmq-producer
+  rabbitmq:
+    host: 192.168.1.116
+    port: 5672
+    username: admin
+    password: admin
+    publisher-confirms: true
+    virtual-host: /  

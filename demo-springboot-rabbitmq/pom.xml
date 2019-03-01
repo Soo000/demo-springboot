@@ -1,0 +1,17 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.kkwrite.demo</groupId>
+		<artifactId>demo-springboot</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>demo-springboot-rabbitmq</artifactId>
+	<packaging>pom</packaging>
+	<modules>
+		<module>demo-springboot-rabbitmq-common</module>
+		<module>demo-springboot-rabbitmq.producer</module>
+		<module>demo-springboot-rabbitmq.consumer</module>
+	</modules>
+</project>
