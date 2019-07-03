@@ -1,0 +1,18 @@
+spring:
+  redis:
+    timeout: 0
+    database: 0
+    host: 192.168.1.117
+    port: 6379
+    password:
+  datasource:
+    primary:
+      url: jdbc:mysql://192.168.1.118:4306/demo-shiro-db?useUnicode=true&characterEncoding=utf-8&useSSL=false
+      username: root
+      password: 1qa@WS
+      driver-class-name: com.mysql.jdbc.Driver
+
+### 日志
+logging:
+  level:
+    root: info

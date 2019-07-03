@@ -37,5 +37,7 @@
 		<module>demo-springboot-oauth2</module>
 		<module>demo-springboot-rabbitmq</module>
 		<module>demo-springboot-elasticsearch-client-rest-high</module>
+		<module>demo-springboot-redis</module>
+		<module>demo-springboot-shiro</module>
 	</modules>
 </project>
