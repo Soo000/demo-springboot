@@ -1,6 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.kkwrite.demo</groupId>
 	<artifactId>demo-springboot</artifactId>
@@ -30,14 +29,15 @@
         </dependency>
     </dependencies>	
 	<modules>
+	    <module>demo-springboot-web</module>
+	    <module>demo-springboot-jsp</module>
 		<module>demo-springboot-jpa</module>
-		<module>demo-springboot-jsp</module>
-		<module>demo-springboot-mybatis</module>
+        <module>demo-springboot-shiro</module>
 		<module>demo-springboot-security</module>
 		<module>demo-springboot-oauth2</module>
 		<module>demo-springboot-rabbitmq</module>
-		<module>demo-springboot-elasticsearch-client-rest-high</module>
 		<module>demo-springboot-redis</module>
-		<module>demo-springboot-shiro</module>
-	</modules>
+        <module>demo-springboot-elasticsearch-client-rest-high</module>		
+		<module>demo-springboot-mybatis</module>
+  </modules>
 </project>
