@@ -14,11 +14,17 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
+import org.crazycake.shiro.AuthCachePrincipal;
 import org.hibernate.validator.constraints.NotEmpty;
 
+/**
+ * 用户实体
+ * 实现 AuthCachePrincipal接口，可以把数据存放到 redis 中
+ *
+ */
 @Table(name = "pe_user")
 @Entity
-public class User implements Serializable {
+public class User implements Serializable, AuthCachePrincipal {
 
 	private static final long serialVersionUID = 6886411976094942276L;
 
@@ -78,6 +84,14 @@ public class User implements Serializable {
 
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
+	}
+
+	/**
+	 * 存放到 redis 中的 key(不指定有默认值)
+	 */
+	@Override
+	public String getAuthCacheKey() {
+		return null;
 	}
 
 }

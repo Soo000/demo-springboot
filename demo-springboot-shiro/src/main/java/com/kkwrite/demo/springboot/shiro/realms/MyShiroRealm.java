@@ -40,11 +40,13 @@ public class MyShiroRealm extends AuthorizingRealm {
 	 * 授权
 	 */
 	@Override
-	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
 		logger.info("进入 ShiroRealm 授权器");
-		//User user = (User) principals.getPrimaryPrincipal();
-		String username = (String) principals.getPrimaryPrincipal();
-		User user = userService.findByName(username);
+		// TODO 不知道为什么强制转换报错
+		User user = (User) principalCollection.getPrimaryPrincipal();
+		
+		/*String username = (String) principalCollection.getPrimaryPrincipal();
+		User user = userService.findByName(username);*/
 		// 角色集合
 		Set<String> roles = new HashSet<>();
 		// 权限集合
@@ -79,10 +81,10 @@ public class MyShiroRealm extends AuthorizingRealm {
 		if (user != null) {
 			String password = user.getPassword();
 			//password = EncryUtils.getMD5(user.getPassword());
-			// 放入 username
-			return new SimpleAuthenticationInfo(username, password, getName());
 			// 放入 user
-			//return new SimpleAuthenticationInfo(user, password, getName());
+			return new SimpleAuthenticationInfo(user, password, getName());
+			// 放入 username
+			//return new SimpleAuthenticationInfo(username, password, getName());
 		}
 		
 		return null;

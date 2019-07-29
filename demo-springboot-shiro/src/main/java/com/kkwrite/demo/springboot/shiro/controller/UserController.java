@@ -79,7 +79,7 @@ public class UserController {
 	@RequestMapping(value="/login")
     public String login(String username,String password) {
         try {
-            /**
+            /*
              * 密码加密：
              * Md5Hash:
              * 参数一：加密的内容
@@ -91,13 +91,13 @@ public class UserController {
             UsernamePasswordToken upToken = new UsernamePasswordToken(username,password);
             // 1.获取subject
             Subject subject = SecurityUtils.getSubject();
-            // 获取session
+            // 2.获取session(自定义了 sessionManager)
             String sid = (String) subject.getSession().getId();
             System.out.println("session id = " + sid);
 
             // 2.调用subject进行登录
             subject.login(upToken);
-            return "登录成功";
+            return "登录成功 sid = " + sid;
         } catch (Exception e) {
             return "用户名或密码错误";
         }

@@ -1,5 +1,6 @@
 package com.kkwrite.demo.springboot.shiro.entity;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,8 +14,10 @@ import javax.persistence.Table;
 
 @Table(name = "pe_role")
 @Entity
-public class Role {
+public class Role implements Serializable {
 
+	private static final long serialVersionUID = -7463058965217348718L;
+	
 	@Id
 	private String id;
     private String name;
