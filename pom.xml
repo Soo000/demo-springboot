@@ -31,10 +31,10 @@
 	<modules>
 	    <module>demo-springboot-web</module>
 	    <module>demo-springboot-jsp</module>
-		<module>demo-springboot-jpa</module>
+        <module>demo-springboot-oauth2</module>
         <module>demo-springboot-shiro</module>
 		<module>demo-springboot-security</module>
-		<module>demo-springboot-oauth2</module>
+        <module>demo-springboot-jpa</module>
 		<module>demo-springboot-rabbitmq</module>
 		<module>demo-springboot-redis</module>
         <module>demo-springboot-elasticsearch-client-rest-high</module>		

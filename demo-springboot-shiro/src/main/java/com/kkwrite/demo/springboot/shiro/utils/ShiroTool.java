@@ -14,7 +14,7 @@ import org.apache.shiro.web.session.mgt.WebSessionKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.kkwrite.demo.springboot.shiro.entity.UserPrivacy;
+import com.kkwrite.demo.springboot.shiro.entity.User;
 import com.kkwrite.demo.springboot.shiro.filter.ShiroAutoAuthFilter;
 import com.kkwrite.demo.springboot.shiro.http.MyHttpServletRequestWrapper;
 
@@ -53,7 +53,7 @@ public class ShiroTool {
 	/**
 	 * 获取用户登录信息
 	 */
-	public static UserPrivacy getUserPrivacy(String sessionID, HttpServletRequest request,
+	public static User getUserPrivacy(String sessionID, HttpServletRequest request,
 			HttpServletResponse response) {
 		/*boolean status = false;
 		SessionKey key = new WebSessionKey(sessionID, request, response);

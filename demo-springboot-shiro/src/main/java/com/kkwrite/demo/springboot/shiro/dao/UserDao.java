@@ -1,8 +1,11 @@
 package com.kkwrite.demo.springboot.shiro.dao;
 
-import org.springframework.stereotype.Repository;
+import com.kkwrite.demo.springboot.shiro.entity.User;
 
-@Repository
-public class UserDao {
-
+public interface UserDao {
+	
+	User findById(String id);
+	
+	User findByUsername(String username);
+	
 }

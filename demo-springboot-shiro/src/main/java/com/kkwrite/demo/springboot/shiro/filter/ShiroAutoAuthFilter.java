@@ -2,7 +2,6 @@ package com.kkwrite.demo.springboot.shiro.filter;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,12 +12,8 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -28,9 +23,6 @@ import org.springframework.context.ApplicationContextAware;
 
 import com.alibaba.fastjson.JSON;
 import com.kkwrite.demo.springboot.shiro.dao.UserDao;
-import com.kkwrite.demo.springboot.shiro.http.MyHttpServletRequestWrapper;
-import com.kkwrite.demo.springboot.shiro.utils.CookieTool;
-import com.kkwrite.demo.springboot.shiro.utils.ShiroTool;
 
 /**
  * 自定义的WebFilter过滤器，该项目中用于基于cookie的自动登录场景，在session过期或者关闭浏览器时，session失效或不存在时，
@@ -44,27 +36,24 @@ public class ShiroAutoAuthFilter implements Filter, ApplicationContextAware {
 
     private static final Logger logger = LoggerFactory.getLogger(ShiroAutoAuthFilter.class);
     
-    ApplicationContext applicationContext;
-
-    @Autowired
-    private RedisUtil redisUtil;
-    
-    @Autowired
-    private UserDao userDao;
-
     public static final String SESSIONID = "JSESSIONID";
 
     public static final int MAXAGE = 1800;
 
     public static final String AUTHORIZATION = "Authorization";
+    
+    ApplicationContext applicationContext;
+
+    //@Autowired
+    //private RedisUtil redisUtil;
 
     @SuppressWarnings("deprecation")
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain) 
     		throws IOException, ServletException {
-        logger.info("shiroAutoAuthFilter被调用");
+        logger.info("shiroAutoAuthFilter 被调用");
         
-        HttpServletRequest request = (HttpServletRequest) servletRequest;
+        /*HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         
         request.setCharacterEncoding("UTF-8");
@@ -122,9 +111,9 @@ public class ShiroAutoAuthFilter implements Filter, ApplicationContextAware {
                     logger.info("JSESSIONID已认证");
                 }
             }
-        }
+        }*/
         
-        chain.doFilter(httpReq, response);
+        chain.doFilter(servletRequest, servletResponse);
     }
 
     private void authcReq(HttpServletResponse response) throws IOException {
