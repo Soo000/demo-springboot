@@ -30,7 +30,6 @@ public class User implements Serializable, AuthCachePrincipal {
 
 	@Id
 	private String id;
-
 	@NotEmpty(message = "账号不能为空")
 	@Size(min = 3, max = 20)
 	@Column(nullable = false, length = 20, unique = true)
