@@ -11,7 +11,6 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,20 +87,6 @@ public class MyShiroRealm extends AuthorizingRealm {
 		}
 		
 		return null;
-	}
-
-	/**
-	 * 通过用户名清除缓存
-	 */
-	public void clearCache(String username) {
-		System.out.println("调用cache清理操作");
-		PrincipalCollection principals = new SimplePrincipalCollection(username, getName());
-		clearCache(principals);
-	}
-
-	@Override
-	public void clearCache(PrincipalCollection principals) {
-		super.clearCache(principals);
 	}
 
 }
