@@ -3,6 +3,7 @@ package com.kkwrite.demo.springboot.shiro.utils;
 import java.security.MessageDigest;
 
 public class EncryUtils {
+	
 	/**
 	 * 生成md5
 	 * @param message
