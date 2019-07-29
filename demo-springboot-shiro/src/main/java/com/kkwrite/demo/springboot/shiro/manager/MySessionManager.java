@@ -8,37 +8,33 @@ import javax.servlet.ServletResponse;
 import org.apache.shiro.web.servlet.ShiroHttpServletRequest;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.apache.shiro.web.util.WebUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 /**
- * 自定义session获取
+ * 自定义 Shiro 的会话管理器
  */
 public class MySessionManager extends DefaultWebSessionManager {
 
-    private static final Logger logger = LoggerFactory.getLogger(MySessionManager.class);
-
-    private static final String AUTHORIZATION = "Authorization";
-
-    private static final String REFERENCED_SESSION_ID_SOURCE = "Stateless request";
-
-    public MySessionManager() {
-        super();
-    }
-
-    @Override
-    protected Serializable getSessionId(ServletRequest request, ServletResponse response) {
-        String id = WebUtils.toHttp(request).getHeader(AUTHORIZATION);
-        // 如果请求头中有 Authorization 则其值为sessionId
-        if (id != null) {
-            request.setAttribute(ShiroHttpServletRequest.REFERENCED_SESSION_ID_SOURCE, REFERENCED_SESSION_ID_SOURCE);
-            request.setAttribute(ShiroHttpServletRequest.REFERENCED_SESSION_ID, id);
-            request.setAttribute(ShiroHttpServletRequest.REFERENCED_SESSION_ID_IS_VALID, Boolean.TRUE);
-            logger.info("Session管理器检测到AUTHORIZATION token 使用此token作为Session");
-            return id;
-        } else {
-            //否则按默认规则从cookie取sessionId
-            return super.getSessionId(request, response);
-        }
-    }
+	/**
+	 * 重写获取 sessionId 的方法
+	 * 请求头 Authorization 中具有 sessionid 信息
+	 */
+	protected Serializable getSessionId(ServletRequest request, ServletResponse response) {
+		// 获取请求头 Authorization 中的数据
+		String id = WebUtils.toHttp(request).getHeader("Authorization");
+		if (StringUtils.isEmpty(id)) {
+			// 第一次登录，如果没有携带，需要生成新的 sessionId
+			return super.getSessionId(request, response);
+		} else {
+			// 设置 sessionId 的来源（从请求头中获取）
+			request.setAttribute(ShiroHttpServletRequest.REFERENCED_SESSION_ID_SOURCE, "header");
+			// 设置 sessionId 的值
+			request.setAttribute(ShiroHttpServletRequest.REFERENCED_SESSION_ID, id);
+			// 设置 sessionId 是否需要验证
+			request.setAttribute(ShiroHttpServletRequest.REFERENCED_SESSION_ID_IS_VALID, Boolean.TRUE);
+			
+			// 返回sessionId；
+			return id;
+		}
+	}
 }

@@ -78,9 +78,11 @@ public class MyShiroRealm extends AuthorizingRealm {
 		User user = userService.findByName(username);
 		if (user != null) {
 			String password = user.getPassword();
-			// 用户存在，对密码进行md5转码并与前端传来的password比对
 			//password = EncryUtils.getMD5(user.getPassword());
-			return new SimpleAuthenticationInfo(username, password, getName()); // getName() realm name	
+			// 放入 username
+			return new SimpleAuthenticationInfo(username, password, getName());
+			// 放入 user
+			//return new SimpleAuthenticationInfo(user, password, getName());
 		}
 		
 		return null;

@@ -2,7 +2,7 @@ package com.kkwrite.demo.springboot.shiro.controller;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,14 +16,17 @@ public class UserController {
 
     // 个人主页
     // 使用shiro注解鉴权
-    // @RequiresPermissions()  -- 访问此方法必须具备的权限
+    // @RequiresPermissions()  -- 
     // @RequiresRoles() -- 访问此方法必须具备的角色
 
     /**
-     * 1.过滤器：如果权限信息不匹配setUnauthorizedUrl地址
-     * 2.注解：如果权限信息不匹配，抛出异常
+     * 1.过滤器：如果权限信息不匹配,跳转到 setUnauthorizedUrl() 设置的地址
+     * 2.注解形式：如果权限不匹配，抛出异常
      */
-    @RequiresPermissions("user-home")
+    //访问此方法必须具备的权限
+    //@RequiresPermissions("user-home")
+    //访问此方法必须具备的角色
+    @RequiresRoles("系统管理员")	
     @RequestMapping(value = "/user/home")
     public String home() {
         return "访问个人主页成功";

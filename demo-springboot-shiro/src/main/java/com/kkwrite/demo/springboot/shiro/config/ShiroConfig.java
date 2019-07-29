@@ -4,24 +4,33 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.crazycake.shiro.RedisCacheManager;
+import org.crazycake.shiro.RedisManager;
+import org.crazycake.shiro.RedisSessionDAO;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.kkwrite.demo.springboot.shiro.manager.MySessionManager;
 import com.kkwrite.demo.springboot.shiro.realms.MyShiroRealm;
 
 @Configuration
 public class ShiroConfig {
 
-	/*@Value("${spring.redis.host}")
+	@Value("${spring.redis.host}")
 	private String host;
 	@Value("${spring.redis.port}")
 	private int port;
+	@Value("${spring.redis.database}")
+	private int database;
 	@Value("${spring.redis.timeout}")
-	private int timeout;*/
+	private int timeout;
 	
 	/**
      * 凭证匹配器
@@ -56,9 +65,9 @@ public class ShiroConfig {
 		// 设置自定义 realm
         securityManager.setRealm(myShiroRealm());
         // 自定义session管理 使用redis
-        //securityManager.setSessionManager(sessionManager());
+        securityManager.setSessionManager(sessionManager());
         // 自定义缓存实现 使用redis
-        //securityManager.setCacheManager(cacheManager());
+        securityManager.setCacheManager(cacheManager());
 
         return securityManager;
     }
@@ -87,12 +96,20 @@ public class ShiroConfig {
         Map<String, String> filterMap = new LinkedHashMap<>();
 		// 配置退出过滤器，修改了默认logou过滤器，清除相应的缓存信息 
         filterMap.put("/logout", "logout");
-        //filterMap.put("/user/home", "anon"); // 可以匿名访问
+        // 可以匿名访问
+        //filterMap.put("/user/home", "anon");
         /*
-         * 使用过滤器的形式配置请求地址的权限 
+         * 使用过滤器的形式配置请求地址的权限
+         * 具有某种权限才可以访问
          */
-        filterMap.put("/user/home", "perms[user-home]"); // 具有某种权限才可以访问
-        filterMap.put("/user/**", "authc"); // 认证之后才可以访问
+        //filterMap.put("/user/home", "perms[user-home]");
+        /*
+         * 使用过滤器的形式配置请求地址的权限
+         * 具有某种角色才可以访问
+         */
+        //filterMap.put("/user/home", "roles[系统管理员]");
+        // 认证之后才可以访问
+        filterMap.put("/user/**", "authc");
         // 自定义的登录过滤器
         //filterMap.put("ShiroAuthFilter", new ShiroAuthFilter());
         // 5.过滤器集合放回到过滤器工厂
@@ -101,49 +118,49 @@ public class ShiroConfig {
 	}	
     
     /**
-     * 自定义sessionManager，使用redisSessionDAO生成并保存session
-     */
-    /*@Bean(name = "sessionManager")
-    public SessionManager sessionManager() {
-        MySessionManager mySessionManager = new MySessionManager();
-        mySessionManager.setSessionDAO(redisSessionDAO());
-        return mySessionManager;
-    }*/
-    
-    /**
-     * 配置shiro redisManager
+     * 1.redisManager
      * @return
      */
-    /*@ConfigurationProperties(prefix = "spring.redis")
+    @ConfigurationProperties(prefix = "spring.redis")
     public RedisManager redisManager() {
         RedisManager redisManager = new RedisManager();
-        redisManager.setDatabase(0);
         redisManager.setHost(host);
 		redisManager.setPort(port);
+		redisManager.setDatabase(database);
 		redisManager.setTimeout(timeout);
         return redisManager;
-    }*/
+    }
     
     /**
-     * cacheManager 缓存 redis实现
-     * @return
-     */
-    /*public RedisCacheManager cacheManager() {
-        RedisCacheManager redisCacheManager = new RedisCacheManager();
-        redisCacheManager.setRedisManager(redisManager());
-        return redisCacheManager;
-    }*/
-    
-    /**
-     * 通过redis RedisSessionDAO shiro sessionDao层的实现 
+     * 2.通过 redisSessionDAO 操作 redis
      * 使用shiro-redis插件
      */
-    /*@Bean("redisSessionDAO")
+    @Bean("redisSessionDAO")
     public RedisSessionDAO redisSessionDAO() {
         RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
         redisSessionDAO.setRedisManager(redisManager());
         return redisSessionDAO;
-    }*/
+    }
+    
+    /**
+     * 3.自定义sessionManager，使用 redisSessionDAO 生成并保存 session
+     */
+    @Bean(name = "sessionManager")
+    public SessionManager sessionManager() {
+        MySessionManager mySessionManager = new MySessionManager();
+        mySessionManager.setSessionDAO(redisSessionDAO());
+        return mySessionManager;
+    }
+    
+    /**
+     * 4.缓存管理（redis实现）
+     * @return
+     */
+    public RedisCacheManager cacheManager() {
+        RedisCacheManager redisCacheManager = new RedisCacheManager();
+        redisCacheManager.setRedisManager(redisManager());
+        return redisCacheManager;
+    }
     
     /**
      * 配置对 shiro 注解的支持.
